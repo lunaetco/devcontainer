@@ -9,7 +9,7 @@
   // https://containers.dev/features.
   "features": {
     "ghcr.io/devcontainers-contrib/features/apt-get-packages:1": {
-      "packages": "direnv,dotenv,postgresql-client,shfmt"
+      "packages": "direnv,dotenv,git,postgresql-client,shfmt"
     },
     "ghcr.io/devcontainers/features/common-utils:2": {
       "installZsh": "true",
@@ -23,10 +23,6 @@
       "plugins": "direnv"
     },
     "ghcr.io/devcontainers/features/docker-in-docker:2": {},
-    "ghcr.io/devcontainers/features/git:1": {
-      "version": "latest",
-      "ppa": "false"
-    },
     "ghcr.io/devcontainers/features/github-cli:1": {},
     "ghcr.io/devcontainers/features/node:1": {},
     "ghcr.io/devcontainers/features/rust:1": {},
