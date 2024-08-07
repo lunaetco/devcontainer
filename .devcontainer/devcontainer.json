@@ -51,7 +51,6 @@
         "editor.formatOnSave": true,
         "editor.inlineSuggest.enabled": true,
         "files.autoSave": "afterDelay",
-        // Use Prettier installed in the `postcreate.sh` script.
         "prettier.prettierPath": "/usr/local/share/nvm/current/lib/node_modules/prettier",
         "shellformat.path": "/usr/bin/shfmt"
       }
