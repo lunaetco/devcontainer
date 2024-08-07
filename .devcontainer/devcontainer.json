@@ -32,9 +32,7 @@
 
   // Use `forwardPorts` to make a list of ports inside the container available
   // locally. This can be used to network with other containers or the host.
-  "forwardPorts": [
-    5432 // PostgreSQL
-  ],
+  "forwardPorts": [],
 
   // Configure tool-specific properties.
   "customizations": {
@@ -61,13 +59,5 @@
   },
 
   // Set environmental variables
-  "containerEnv": {
-    // dotenv ignores env vars if they're set and empty
-  },
-
-  // Use `postCreateCommand` to run commands after the container is created.
-  "postCreateCommand": "/usr/local/libexec/devcontainer/postcreate.sh",
-
-  // Use `postStartCommand` to run commands after the container is started.
-  "postStartCommand": "/usr/local/libexec/devcontainer/poststart.sh"
+  "containerEnv": {}
 }
