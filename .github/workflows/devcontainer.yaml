@@ -39,13 +39,27 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      # Workaround https://github.com/devcontainers/ci/issues/191
+      - name: Update Skopeo
+        env:
+          REPO_URL: https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/unstable
+        run: |
+          sudo apt purge buildah golang-github-containers-common podman skopeo
+          sudo apt autoremove --purge
+          source /etc/os-release
+          sudo sh -c "echo 'deb ${REPO_URL}/x${NAME}_${VERSION_ID}/ /' > /etc/apt/sources.list.d/devel:kubic:libcontainers:unstable.list"
+          wget -qnv https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable/x${NAME}_${VERSION_ID}/Release.key -O Release.key
+          sudo apt-key add Release.key
+          sudo apt-get update
+          sudo apt-get install -y skopeo
+
       - name: Pre-build DevContainer image
         uses: devcontainers/ci@v0.3
         with:
           imageName: ghcr.io/${{ github.repository }}
           cacheFrom: ghcr.io/${{ github.repository }}
           platform: linux/amd64,linux/arm64
-          push: always
+          refFilterForPush: refs/heads/main
 
       # - name: Run Trivy vulnerability scanner
       #   uses: aquasecurity/trivy-action@0.24.0
