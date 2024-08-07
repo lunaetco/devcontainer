@@ -1,0 +1,76 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+{
+  "name": "Luna & Co. DevContainer",
+
+  "image": "mcr.microsoft.com/devcontainers/base:1",
+  "remoteUser": "vscode",
+
+  // Features to add to the dev container. More info:
+  // https://containers.dev/features.
+  "features": {
+    "ghcr.io/devcontainers-contrib/features/apt-get-packages:1": {
+      "packages": "direnv,dotenv,postgresql-client,shfmt"
+    },
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": "true",
+      "configureZshAsDefaultShell": "true",
+      "username": "vscode",
+      "userUid": "1000",
+      "userGid": "1000",
+      "upgradePackages": "true"
+    },
+    "ghcr.io/devcontainers-contrib/features/zsh-plugins:0": {
+      "plugins": "direnv"
+    },
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/devcontainers/features/git:1": {
+      "version": "latest",
+      "ppa": "false"
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/node:1": {},
+    "ghcr.io/devcontainers/features/rust:1": {},
+    "ghcr.io/devcontainers-community/npm-features/prettier:1": {}
+  },
+
+  // Use `forwardPorts` to make a list of ports inside the container available
+  // locally. This can be used to network with other containers or the host.
+  "forwardPorts": [
+    5432 // PostgreSQL
+  ],
+
+  // Configure tool-specific properties.
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "bradlc.vscode-tailwindcss",
+        "dotenv.dotenv-vscode",
+        "eamodio.gitlens",
+        "esbenp.prettier-vscode",
+        "fill-labs.dependi",
+        "foxundermoon.shell-format",
+        "mikestead.dotenv",
+        "ms-azuretools.vscode-docker"
+      ],
+      "settings": {
+        "editor.formatOnSave": true,
+        "editor.inlineSuggest.enabled": true,
+        "files.autoSave": "afterDelay",
+        // Use Prettier installed in the `postcreate.sh` script.
+        "prettier.prettierPath": "/usr/local/share/nvm/current/lib/node_modules/prettier",
+        "shellformat.path": "/usr/bin/shfmt"
+      }
+    }
+  },
+
+  // Set environmental variables
+  "containerEnv": {
+    // dotenv ignores env vars if they're set and empty
+  },
+
+  // Use `postCreateCommand` to run commands after the container is created.
+  "postCreateCommand": "/usr/local/libexec/devcontainer/postcreate.sh",
+
+  // Use `postStartCommand` to run commands after the container is started.
+  "postStartCommand": "/usr/local/libexec/devcontainer/poststart.sh"
+}
