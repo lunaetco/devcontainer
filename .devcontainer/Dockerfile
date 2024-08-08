@@ -8,3 +8,7 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     direnv postgresql-client shfmt && \
     rm -rf /var/lib/apt/lists/*
+
+# Install nats CLI.
+RUN curl -sf https://binaries.nats.dev/nats-io/natscli/nats | \
+    PREFIX=/usr/local/bin sh
