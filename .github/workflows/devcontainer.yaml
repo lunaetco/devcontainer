@@ -55,6 +55,7 @@ jobs:
 
   scan:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
     needs: build-push
     steps:
       - name: Run Trivy vulnerability scanner
