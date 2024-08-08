@@ -12,10 +12,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     direnv golang postgresql-client python3 shfmt
 
 # Install NATS tools.
-RUN curl -sf https://binaries.nats.dev/nats-io/natscli/nats | \
-    PREFIX=/usr/local/bin sh
-RUN curl -sfL https://raw.githubusercontent.com/nats-io/nsc/master/install.py | \
-    python3
-RUN --mount=type=cache,target=/root/.cache/go-build \
-    go install github.com/nats-io/nkeys/nk@latest && \
-    go install github.com/nats-io/nats-top@latest
+RUN --mount=type=bind,target=/usr/sbin/install_from_github,source=install_from_github.sh \
+    install_from_github nats-io natscli && \
+    install_from_github nats-io nats-top && \
+    install_from_github nats-io nkeys && \
+    install_from_github nats-io nsc
