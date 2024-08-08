@@ -19,8 +19,9 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update && \
     apt-get install -y --no-install-recommends zed
 
-# Install NATS tools.
+# Install Buf & NATS tools.
 RUN --mount=type=bind,target=/usr/sbin/install_from_github,source=install_from_github.sh \
+    install_from_github bufbuild buf && \
     install_from_github nats-io natscli && \
     install_from_github nats-io nats-top && \
     install_from_github nats-io nkeys && \

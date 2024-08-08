@@ -30,7 +30,6 @@ Use the [pre-built DevContainer image](https://containers.dev/guide/prebuild).
         "esbenp.prettier-vscode",
         "fill-labs.dependi",
         "foxundermoon.shell-format",
-        "mikestead.dotenv",
         "ms-azuretools.vscode-docker"
       ],
       "settings": {
