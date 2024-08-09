@@ -38,15 +38,18 @@ esac
 # Fetch the release information
 RELEASE=$(curl -s "https://api.github.com/repos/$OWNER/$REPO/releases")
 
-DOWNLOAD_URL=$(printf "%s" "$RELEASE" | jq -r "[
-    .[].assets[] |
+DOWNLOAD_URL=$(printf "%s" "$RELEASE" | jq -r "
+map([
+    .assets[] |
     select(.name |
         test(\"($ARCH_VARIANTS)\"; \"i\") and
-        test(\"linux\"; \"i\")) |
+        test(\"linux\"; \"i\") and
+        (test(\"musl\"; \"i\") | not)
+    ) |
     { url: .browser_download_url } +
     (.name | capture(\"\\\\.(?<ext>deb|zip|tar\\\\.gz|tgz|xz)$\"; \"i\")) |
     select(isempty(.ext) | not)
-] | first | \"\(.url) \(.ext)\"")
+] | sort_by(.ext)) | flatten | first | \"\(.url) \(.ext)\"")
 
 read -r DOWNLOAD_URL EXT <<<"$DOWNLOAD_URL"
 
