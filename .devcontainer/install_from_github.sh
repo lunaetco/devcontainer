@@ -40,6 +40,24 @@ esac
 echo "[$OWNER/$REPO] Downloading release data"
 RELEASE=$(wget --https-only -nv -O - "https://api.github.com/repos/$OWNER/$REPO/releases")
 
+PARSED=$(printf "%s" "$RELEASE" | jq -r "
+map(
+    .assets | map(
+        { name: .name, url: .browser_download_url } +
+        (.name | capture(\"\\\\.(?<ext>deb|tar\\\\.(gz|xz)|tgz|zip)$\"; \"i\"))
+    ) | sort_by(.ext) | .[] | select(
+        .name | (
+            test(\"($ARCH_VARIANTS)\"; \"i\") and
+            test(\"linux\"; \"i\") and
+            (test(\"musl\"; \"i\") | not)
+        )
+    )
+) | flatten | map(
+    select(
+        (isempty(.url) or isempty(.ext)) | not
+    )
+) | first | \"\(.url) \(.ext)\"")
+
 read -r DOWNLOAD_URL EXT <<<"$PARSED"
 echo "[$OWNER/$REPO] Parsed release data: $DOWNLOAD_URL $EXT"
 
@@ -65,7 +83,7 @@ zip)
     unzip -o "$ASSET"
     find . -type f -executable -exec install {} "$INSTALL_DIR" \;
     ;;
-tar.gz | tgz | xz)
+*)
     tar xf "$ASSET"
     find . -type f -executable -exec install {} "$INSTALL_DIR" \;
     ;;
