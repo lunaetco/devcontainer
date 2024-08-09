@@ -21,10 +21,11 @@ INSTALL_DIR="${3:-/usr/local/bin}"
 
 # Determine host architecture and OS
 ARCH=$(uname -m)
+echo "[$OWNER/$REPO] Detected architecture $ARCH"
 
 # Map architecture variants
 case $ARCH in
-x86_64)
+x86_64 | amd64)
     ARCH_VARIANTS="amd64|x86_64"
     ;;
 aarch64 | arm64)
@@ -36,25 +37,14 @@ aarch64 | arm64)
 esac
 
 # Fetch the release information
-RELEASE=$(curl -s "https://api.github.com/repos/$OWNER/$REPO/releases")
+echo "[$OWNER/$REPO] Downloading release data"
+RELEASE=$(wget --https-only -nv -O - "https://api.github.com/repos/$OWNER/$REPO/releases")
 
-DOWNLOAD_URL=$(printf "%s" "$RELEASE" | jq -r "
-map([
-    .assets[] |
-    select(.name |
-        test(\"($ARCH_VARIANTS)\"; \"i\") and
-        test(\"linux\"; \"i\") and
-        (test(\"musl\"; \"i\") | not)
-    ) |
-    { url: .browser_download_url } +
-    (.name | capture(\"\\\\.(?<ext>deb|zip|tar\\\\.gz|tgz|xz)$\"; \"i\")) |
-    select(isempty(.ext) | not)
-] | sort_by(.ext)) | flatten | first | \"\(.url) \(.ext)\"")
+read -r DOWNLOAD_URL EXT <<<"$PARSED"
+echo "[$OWNER/$REPO] Parsed release data: $DOWNLOAD_URL $EXT"
 
-read -r DOWNLOAD_URL EXT <<<"$DOWNLOAD_URL"
-
-if [[ -z "$DOWNLOAD_URL" || -z "$EXT" ]]; then
-    echo "No suitable file found for architecture: $ARCH (variants: $ARCH_VARIANTS)"
+if [[ -z "$DOWNLOAD_URL" || "$DOWNLOAD_URL" == "null" || -z "$EXT" || "$EXT" == "null" ]]; then
+    echo "[$OWNER/$REPO] No suitable file found for architecture: $ARCH (variants: $ARCH_VARIANTS)"
     exit 1
 fi
 
@@ -63,7 +53,8 @@ TMPDIR=$(mktemp -d)
 cd "$TMPDIR"
 
 ASSET="asset.$EXT"
-curl -sfLo "$ASSET" "$DOWNLOAD_URL"
+echo "[$OWNER/$REPO] Downloading $DOWNLOAD_URL"
+wget --https-only -nv -O "$ASSET" "$DOWNLOAD_URL"
 
 # Install asset
 case $EXT in
@@ -80,6 +71,6 @@ tar.gz | tgz | xz)
     ;;
 esac
 
-echo "Successfully installed binaries"
+echo "[$OWNER/$REPO] Successfully installed binaries"
 cd /
 rm -rf "$TMPDIR"
