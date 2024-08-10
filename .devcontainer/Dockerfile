@@ -4,7 +4,8 @@ ARG TARGETPLATFORM
 RUN --mount=type=bind,target=/usr/sbin/cargo_cross_install,source=cargo_cross_install.sh \
     APT_DEPENDENCIES='libmariadb-dev libpq-dev libsqlite3-dev' \
     cargo_cross_install --root /opt diesel_cli && \
-    cargo_cross_install --root /opt sea-orm-cli
+    cargo_cross_install --root /opt sea-orm-cli && \
+    cargo_cross_install --root /opt sqlx-cli
 
 # -------------------------------------------------------------------------
 
