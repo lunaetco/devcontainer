@@ -17,6 +17,7 @@ target_triple() {
 
 # Install cross-compile dependencies
 install_dependencies() {
+    local apt_deps=${APT_DEPENDENCIES:-}
     local arch1
     local arch2
     local deps=()
@@ -39,7 +40,7 @@ install_dependencies() {
     esac
 
     # Suffix each package with :$arch2
-    for pkg in $APT_DEPENDENCIES; do
+    for pkg in $apt_deps; do
         deps+=("$pkg:$arch2")
     done
 

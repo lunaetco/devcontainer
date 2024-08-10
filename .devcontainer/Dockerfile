@@ -3,7 +3,8 @@ FROM --platform=$BUILDPLATFORM rust:1-bookworm as rust-builder
 ARG TARGETPLATFORM
 RUN --mount=type=bind,target=/usr/sbin/cargo_cross_install,source=cargo_cross_install.sh \
     APT_DEPENDENCIES='libmariadb-dev libpq-dev libsqlite3-dev' \
-    cargo_cross_install --root /opt diesel_cli
+    cargo_cross_install --root /opt diesel_cli && \
+    cargo_cross_install --root /opt sea-orm-cli
 
 # -------------------------------------------------------------------------
 
@@ -18,7 +19,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y --no-install-recommends \
-    direnv postgresql-client python3 shfmt \
+    direnv pkg-config postgresql-client python3 shfmt \
     libmariadb3 libpq5 libsqlite3-0
 
 # Install tools from GitHub.
