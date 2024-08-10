@@ -20,7 +20,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y --no-install-recommends \
-    direnv pkg-config postgresql-client python3 shfmt \
+    direnv pkg-config postgresql-client python3 shfmt uuid \
     libmariadb3 libpq5 libsqlite3-0
 
 # Install tools from GitHub.
