@@ -30,7 +30,8 @@ RUN --mount=type=bind,target=/usr/sbin/install_from_github,source=install_from_g
     install_from_github nats-io natscli && \
     install_from_github nats-io nats-top && \
     install_from_github nats-io nkeys && \
-    install_from_github nats-io nsc
+    install_from_github nats-io nsc && \
+    install_from_github openfga cli
 
 # Install Rust binaries
 COPY --from=rust-builder /opt/bin/* /usr/local/bin/
