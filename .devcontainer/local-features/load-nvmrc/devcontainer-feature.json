@@ -1,0 +1,11 @@
+{
+  "id": "load-nvmrc",
+  "name": "load-nvmrc",
+  "description": "Load nvmrc automatically",
+  "options": {},
+  "containerEnv": {},
+  "installsAfter": [
+    "ghcr.io/devcontainers/features/common-utils",
+    "ghcr.io/devcontainers/features/node"
+  ]
+}
