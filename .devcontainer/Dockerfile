@@ -24,12 +24,17 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     libmariadb3 \
     libpq5 \
     libsqlite3-0 \
+    nodejs \
+    npm \
     pkg-config \
     postgresql-client \
     protobuf-compiler \
     python3 \
     shfmt \
     uuid
+
+# Install Prettier
+RUN npm install --global prettier
 
 # Install tools from GitHub.
 RUN --mount=type=bind,target=/usr/sbin/install_from_github,source=install_from_github.sh \

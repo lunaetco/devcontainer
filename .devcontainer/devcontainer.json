@@ -29,7 +29,6 @@
       "version": "latest"
     },
     "ghcr.io/devcontainers/features/rust:1": {},
-    "ghcr.io/devcontainers-community/npm-features/prettier:1": {},
     "./local-features/load-nvmrc": {}
   },
 
@@ -54,7 +53,7 @@
         "editor.formatOnSave": true,
         "editor.inlineSuggest.enabled": true,
         "files.autoSave": "afterDelay",
-        "prettier.prettierPath": "/usr/local/share/nvm/current/lib/node_modules/prettier",
+        "prettier.prettierPath": "/usr/local/lib/node_modules/prettier",
         "shellformat.path": "/usr/bin/shfmt"
       }
     }
