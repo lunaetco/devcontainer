@@ -21,6 +21,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get upgrade -y && \
     apt-get install -y --no-install-recommends \
     direnv \
+    jose \
     libmariadb3 \
     libpq5 \
     libsqlite3-0 \
